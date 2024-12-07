@@ -35,11 +35,12 @@ if((nombreIngresado !="") && (apellidoIngresado !="")) {
     alert("Error: Ingresar nombre y apellido");
 }
 
-//Tienda Con Opciones
+//TIENDA CON OPCIONES
+let total = 0;
+let productos = "Los productos que usted compro son los siguientes: ";
 
-let total = 0
-let productos = "Los productos que usted compro son los siguientes: "
 
+// LOGICA DE VALIDACION
 function validarDatos (dato) {
     if (isNaN (dato)) {
         return false 
@@ -60,15 +61,78 @@ function validarDatos (dato) {
         return numero;
     }
  
-function logicaDeCompra (precio, productos, cantidad=1) {
-    total = total + precio * cantidad 
-    productos = productos + "\n" + productos + "X" + cantidad 
-}
+//LOGICA DE COMPRA
+
+    function logicaDeCompra(precio, producto, cantidad = 1) {
+        total += precio * cantidad;
+        productos = productos + "\n" + producto + "X" + cantidad + "Precio Unitario: ";
+    }
+// CALCULO DE PAGO
+    function calculoTotalPago(descuento) {
+        total = total;
+        alert("Su total es de: " + total);
+    }
+    
+    function confirmacionDePago() {
+        
+        let pago = confirm (productos + "\n\n Total: " + total + "\n Confirma la compra?");
+
+    
+        if (pago) {
+            total = 0
+            productos = ""
+            alert("Gracias por su compra");
+        } else {
+            total = 0
+            productos = ""
+            alert("Sera en otra oportunidad");
+        }
+    
+        // Reinicia los valores
+        total = 0;
+        productos = "Los productos que usted compro son los siguientes: ";
+    }
+
+//LOGICA DE PAGO
+
+    function logicaDePago () {
+    let bandera = true 
+    while (bandera){ 
+    let opciones = logicaDeValidacion("Con qué medio de Pago vas a abonar?\n 1-Efectivo\n 2-Transferencia\n 3-Tarjeta de Crédito o Débito\n"); 
+    switch (opciones) {
+        case 0: 
+            bandera = !confirm ("Queres usar este medio de pago?")
+            return
+        case 1: 
+            calculoTotalPago(1);
+            bandera = !confirm ("Queres usar este medio de pago?")
+            break
+        case 2: 
+            calculoTotalPago(1);
+            bandera = !confirm ("Queres usar este medio de pago?")
+            break
+        case 3: 
+            calculoTotalPago(1);
+            bandera = !confirm ("Queres usar este medio de pago?")
+            break
+        default:
+            bandera = !confirm ("Queres ver otros medio de pago?")
+            break 
+    }  
+    }
+    let opciones = logicaDeValidacion("Con qué medio de Pago vas a abonar?\n 1-Efectivo\n 2-Transferencia\n 3-Tarjeta de Crédito o Débito\n");  
+    confirmacionDePago();
+    }
+
+//TIENDA PROPIAMENTE DICHA
 
 function AlmacenOnline() {
-    let bandera = true
-    while(bandera) {
-    let opciones = logicaDeValidacion("Bienvenido al Almacen Online, ¿Qué deseas comprar?\n 1-Salamin\n 2- Queso de Campo\n 3- Cerveza\n");
+   
+    let bandera = true;
+
+    while (bandera) {
+        let opciones = logicaDeValidacion(
+            "Bienvenido al Almacen Online, ¿Qué deseas comprar?\n 1-Salamin\n 2- Queso de Campo\n 3- Cerveza\n");
         
     let cantidad = 1  
 
@@ -81,7 +145,7 @@ function AlmacenOnline() {
     }
     
     if (opciones !== 0) {
-        cantidad = Number (prompt ("¿Cuánto mas quieres comprar?"))
+        cantidad = Number (prompt ("¿Qué mas quieres comprar?"))
     }
     
         switch (opciones) {
@@ -104,7 +168,8 @@ function AlmacenOnline() {
                 break;
             default:
                 alert("No tenemos esa opción");
-                bandera = confirm("¿Quieres seguir comprando?");
+                bandera = true;
+                break
         } 
     }
 }
@@ -112,3 +177,6 @@ function AlmacenOnline() {
 console.log (total)
 console.log (productos)
 AlmacenOnline() 
+if (total > 1) {
+    logicaDePago();
+}
